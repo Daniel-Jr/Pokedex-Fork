@@ -1,0 +1,55 @@
+@model Pokedex.ViewModels.DetailsVM
+@{
+    ViewData["Title"] = "Pokemon";
+    string BackgroundColor(string cor)
+    {
+        return cor.Replace("1)", "0.75)");
+    };
+}
+<head>
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+
+<main class="flex-fill d-flex align-items-center">
+    <div class="container text-white">
+        <div class="row">
+            @if(Model.Anterior != null){
+             <div class="col text-center">
+                <a asp-action="Details" asp-route-id="@Model.Anterior.Numero" class="btn btn-lg btn-outline-danger text-white">Nº @Model.Anterior.Numero.ToString("000") - @Model.Anterior.Nome</a>
+             </div>
+            }
+            <div class="col text-center">
+                <h1 class="fs-1">@Model.Atual.Nome <span class="fs-2 text-secondary">Nº @Model.Atual.Numero.ToString("000")</span></h1>
+            </div>
+            @if(Model.Proximo != null){
+              <div class="col text-center">
+                <a asp-action="Details" asp-route-id="@Model.Proximo.Numero" class="btn btn-lg btn-outline-danger text-white">Nº @Model.Proximo.Numero.ToString("000") - @Model.Proximo.Nome</a>
+              </div>
+            }
+             
+        </div>
+
+        <div style="background-color: @(Model.Atual.Tipos.Count > 0 ? BackgroundColor(@Model.Atual.Tipos[0].Tipo.Cor) : "bg-secondary" ); border: 3px solid black; border-radius: 25px; ">
+ 
+    
+            <div class="row mt-5">
+                <div class="col-lg-5 p-0">
+                    <img class="img-fluid cursor-pointer" src="@Model.Atual.Imagem" alt="@Model.Atual.Nome">
+                </div>
+                <div class="col-lg-7 fs-5 mt-4">
+                    <p class="mb-3"><strong>Descrição:</strong> @Model.Atual.Descricao</p>
+                    <p class="mb-3"><strong>Região:</strong> @Model.Atual.Regiao.Nome</p>
+                    <p class="mb-3"><strong>Altura:</strong> @Model.Atual.Altura M</p>
+                    <p class="mb-3"><strong>Peso:</strong> @Model.Atual.Peso Kg</p>
+                    <p class="fw-bold">Tipo</p>
+                    <div class="d-flex gap-2 my-2">
+                        @foreach (PokemonTipo pokemonTipo in Model.Atual.Tipos)
+                            {
+                                <a href="#" class="btn text-white" style="background-color: @pokemonTipo.Tipo.Cor; border; border: 2px solid black; border-radius: 10px;">@pokemonTipo.Tipo.Nome</a>
+                            }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
